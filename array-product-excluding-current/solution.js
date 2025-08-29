@@ -1,35 +1,35 @@
-// Array Product Excluding Current
-// Write your solution here
+// Calculates the product of all elements in an array except for the element at the current index.
 function arrayProductExcludingCurrent(numbers) {
-  const zeroIndex = numbers.indexOf(0); // -1
-  const lastZeroIndex = numbers.lastIndexOf(0); // -1
+  const zeroIndex = numbers.indexOf(0);
+  const lastZeroIndex = numbers.lastIndexOf(0);
 
-  // init result array -> [0, 0, 0]
-  const result = Array.from({ length: numbers.length }).fill(0);
+  // Initialize the result array with zeros.
+  const result = new Array(numbers.length).fill(0);
 
-  if (zeroIndex > -1 && lastZeroIndex > -1 && zeroIndex !== lastZeroIndex) {
-    // case 1: has more than one zeros -> return [0, 0, ...]
-    // do nothing
-  } else if (zeroIndex > -1) {
-    // case 2: has one zero
-    const allPrd = numbers.reduce((acc, cur) => {
-      if (cur !== 0) {
-        acc = acc * cur;
-      }
+  // Case 1: If there are two or more zeros, the result is an array of all zeros.
+  // The initialized array is already correct, so we can return it.
+  if (zeroIndex !== -1 && zeroIndex !== lastZeroIndex) {
+    return result;
+  }
 
-      return acc;
+  // Case 2: If there is exactly one zero.
+  if (zeroIndex !== -1) {
+    // Calculate the product of all non-zero elements.
+    const productOfOthers = numbers.reduce((acc, cur) => {
+      return cur === 0 ? acc : acc * cur;
     }, 1);
+    // The result at the index of the zero is the product of all other elements.
+    result[zeroIndex] = productOfOthers;
+    return result;
+  }
 
-    result[zeroIndex] = allPrd;
-  } else {
-    // case 3: no zeros
-    const allPrd = numbers.reduce((acc, cur) => acc * cur, 1); // 6
+  // Case 3: If there are no zeros.
+  // Calculate the product of all elements.
+  const totalProduct = numbers.reduce((acc, cur) => acc * cur, 1);
 
-    // loop the number array, divide current number by allPrd -> [6, 3, 2]
-    for (let i = 0; i < numbers.length; i++) {
-      // i = 1
-      result[i] = allPrd / numbers[i];
-    }
+  // For each element, the result is the total product divided by the element itself.
+  for (let i = 0; i < numbers.length; i++) {
+    result[i] = totalProduct / numbers[i];
   }
 
   return result;

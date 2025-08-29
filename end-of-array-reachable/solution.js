@@ -1,18 +1,17 @@
 // End of Array Reachable
 // Write your solution here
-// ex: [0, 0, 100, 0, 0, 5] false
-// ex: [3, 6, 0, 0, 0, 2, 0, 1, 98, 5]
+// ex: [0, 0, 100, 0, 0, 5] -> false
+// ex: [3, 6, 0, 0, 0, 2, 0, 1, 98, 5] -> true
 
 function endOfArrayReachable(numbers) {
-  // initiate a `credit` variable, which means the most steps that is able to move
-  // loop the numbers array
-  // when encounter zero, minus the credit by one
-  // when encounter number other than zero, add credit by Math.max(number, credit)
-  // when credit = 0 & not reach the end of the array yet, return false
-  // otherwise, return true
+  // `credit` represents the maximum number of steps we can still move forward.
+  // We iterate through the array, and at each position, we update our credit.
+  // The new credit is the larger of:
+  //   1. The current credit minus 1 (since we used one step to get to the current position).
+  //   2. The value at the current position (which could be a new, larger number of steps).
+  // If credit becomes 0 before we reach the last element, it means we are stuck.
 
   let result = true;
-
   let credit = numbers[0];
 
   for (let pointer = 0; pointer < numbers.length; pointer++) {
@@ -20,7 +19,8 @@ function endOfArrayReachable(numbers) {
 
     credit = Math.max(credit - 1, number);
 
-    // means cannot move forward && not reached the end yet
+    // means cannot move forward anymore && have not yet reached the end
+    // break the loop immediately and return false
     if (credit === 0 && pointer < numbers.length - 1) {
       result = false;
 
